@@ -1,2 +1,4 @@
 *.pyc
 ghostdriver.log
+*.png
+*.json

@@ -103,10 +103,21 @@ class SonaTopicScraper(object):
         item['author'] = head.text
         item['title'] = info[0].text.strip()
         item['delivered'] = info[1].text.strip()
-        item['topics'] = {u.split('-')[0].strip():u.split('-')[1].strip()
-                            for u in vals.text.split('\n')}
+        item['topics'] = self._parse_topic_values(vals)
         
         return item
+    
+    
+    def _parse_topic_values(self, vals):
+        data = {}
+        
+        for u in vals.text.split('\n'):
+            upto = u.rfind('-')
+            topic = u[:upto].strip()
+            pct = u[upto + 1:].strip()
+            data[topic] = pct
+    
+        return data        
 
 
 if __name__ == '__main__':
