@@ -56,6 +56,7 @@ class SonaTopicScraper(object):
             
         except Exception, e:
             print '\a%s' % e
+            self.driver.save_screenshot('screenshot_of_parsing.png')
         
         else:
             
@@ -82,7 +83,8 @@ class SonaTopicScraper(object):
     def toggle_all_presidents(self):
         
         for x in self.driver.find_elements_by_xpath(TOGGLE_XPATH):
-            x.find_element_by_xpath('a').click()
+            if x.get_attribute('class') != 'active':
+                x.find_element_by_xpath('a').click()
             sleep(1)
     
     
@@ -90,7 +92,6 @@ class SonaTopicScraper(object):
         elem = self.wait_for_element(By.CSS_SELECTOR, PANEL_CSS)
         
         print 4*' ' + '- Collecting fields...'
-        self.driver.save_screenshot('screenshot_of_parsing.png')
         self.wait_for_element(By.CSS_SELECTOR, INFO_CSS, parent=elem)
         
         info = elem.find_elements_by_css_selector(INFO_CSS)
